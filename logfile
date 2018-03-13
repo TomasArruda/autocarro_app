@@ -1,0 +1,122 @@
+2018-03-09 11:21:35.633 -03 [50963] FATAL:  lock file "postmaster.pid" already exists
+2018-03-09 11:21:35.633 -03 [50963] HINT:  Is another postmaster (PID 50950) running in data directory "/usr/local/var/postgres"?
+2018-03-09 11:22:05.459 -03 [51107] LOG:  listening on IPv6 address "::1", port 5432
+2018-03-09 11:22:05.459 -03 [51107] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2018-03-09 11:22:05.460 -03 [51107] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2018-03-09 11:22:05.479 -03 [51108] LOG:  database system was shut down at 2018-03-09 11:21:57 -03
+2018-03-09 11:22:05.490 -03 [51107] LOG:  database system is ready to accept connections
+2018-03-09 11:26:49.555 -03 [51210] ERROR:  database "autocarro_app_development" already exists
+2018-03-09 11:26:49.555 -03 [51210] STATEMENT:  CREATE DATABASE "autocarro_app_development" ENCODING = 'unicode'
+2018-03-09 11:26:49.570 -03 [51211] ERROR:  database "autocarro_app_test" already exists
+2018-03-09 11:26:49.570 -03 [51211] STATEMENT:  CREATE DATABASE "autocarro_app_test" ENCODING = 'unicode'
+2018-03-12 15:10:11.609 -03 [63439] ERROR:  database "autocarro_app_development" already exists
+2018-03-12 15:10:11.609 -03 [63439] STATEMENT:  CREATE DATABASE "autocarro_app_development" ENCODING = 'unicode'
+2018-03-12 15:10:11.634 -03 [63440] ERROR:  database "autocarro_app_test" already exists
+2018-03-12 15:10:11.634 -03 [63440] STATEMENT:  CREATE DATABASE "autocarro_app_test" ENCODING = 'unicode'
+2018-03-12 17:25:23.082 -03 [66725] ERROR:  relation "connections" already exists
+2018-03-12 17:25:23.082 -03 [66725] STATEMENT:  CREATE TABLE "connections" ("id" bigserial primary key, "trip_duration" integer, "start_id" bigint, "end_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_be1b7c13a5"
+	FOREIGN KEY ("start_id")
+	  REFERENCES "starts" ("id")
+	, CONSTRAINT "fk_rails_e0cbb82a9b"
+	FOREIGN KEY ("end_id")
+	  REFERENCES "ends" ("id")
+	)
+2018-03-12 17:29:55.953 -03 [66912] ERROR:  relation "connections" already exists
+2018-03-12 17:29:55.953 -03 [66912] STATEMENT:  CREATE TABLE "connections" ("id" bigserial primary key, "trip_duration" integer, "start_id" bigint, "end_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_be1b7c13a5"
+	FOREIGN KEY ("start_id")
+	  REFERENCES "starts" ("id")
+	, CONSTRAINT "fk_rails_e0cbb82a9b"
+	FOREIGN KEY ("end_id")
+	  REFERENCES "ends" ("id")
+	)
+2018-03-12 17:30:39.750 -03 [66999] ERROR:  relation "starts" does not exist
+2018-03-12 17:30:39.750 -03 [66999] STATEMENT:  CREATE TABLE "connections" ("id" bigserial primary key, "trip_duration" integer, "start_id" bigint, "end_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_be1b7c13a5"
+	FOREIGN KEY ("start_id")
+	  REFERENCES "starts" ("id")
+	, CONSTRAINT "fk_rails_e0cbb82a9b"
+	FOREIGN KEY ("end_id")
+	  REFERENCES "ends" ("id")
+	)
+2018-03-12 17:33:26.427 -03 [67127] ERROR:  relation "buses" already exists
+2018-03-12 17:33:26.427 -03 [67127] STATEMENT:  CREATE TABLE "buses" ("id" bigserial primary key, "registration_numer" character varying, "trip_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+2018-03-12 17:49:45.437 -03 [67799] ERROR:  database "autocarro_app_development" is being accessed by other users
+2018-03-12 17:49:45.437 -03 [67799] DETAIL:  There is 1 other session using the database.
+2018-03-12 17:49:45.437 -03 [67799] STATEMENT:  DROP DATABASE IF EXISTS "autocarro_app_development"
+2018-03-12 17:51:05.903 -03 [67891] ERROR:  table "identifier" does not exist
+2018-03-12 17:51:05.903 -03 [67891] STATEMENT:  DROP TABLE "identifier"
+2018-03-12 17:51:41.906 -03 [67921] ERROR:  table "bus_stops" does not exist
+2018-03-12 17:51:41.906 -03 [67921] STATEMENT:  DROP TABLE "bus_stops"
+2018-03-12 17:54:13.392 -03 [68024] ERROR:  database "autocarro_app_development" is being accessed by other users
+2018-03-12 17:54:13.392 -03 [68024] DETAIL:  There is 1 other session using the database.
+2018-03-12 17:54:13.392 -03 [68024] STATEMENT:  DROP DATABASE IF EXISTS "autocarro_app_development"
+2018-03-12 19:09:08.602 -03 [69200] ERROR:  relation "trip_bus_stops" does not exist at character 566
+2018-03-12 19:09:08.602 -03 [69200] STATEMENT:                SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+	                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
+	                     c.collname, col_description(a.attrelid, a.attnum) AS comment
+	                FROM pg_attribute a
+	                LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+	                LEFT JOIN pg_type t ON a.atttypid = t.oid
+	                LEFT JOIN pg_collation c ON a.attcollation = c.oid AND a.attcollation <> t.typcollation
+	               WHERE a.attrelid = '"trip_bus_stops"'::regclass
+	                 AND a.attnum > 0 AND NOT a.attisdropped
+	               ORDER BY a.attnum
+	
+2018-03-12 19:15:55.929 -03 [70102] ERROR:  relation "trip_bus_stops" does not exist at character 566
+2018-03-12 19:15:55.929 -03 [70102] STATEMENT:                SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+	                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
+	                     c.collname, col_description(a.attrelid, a.attnum) AS comment
+	                FROM pg_attribute a
+	                LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+	                LEFT JOIN pg_type t ON a.atttypid = t.oid
+	                LEFT JOIN pg_collation c ON a.attcollation = c.oid AND a.attcollation <> t.typcollation
+	               WHERE a.attrelid = '"trip_bus_stops"'::regclass
+	                 AND a.attnum > 0 AND NOT a.attisdropped
+	               ORDER BY a.attnum
+	
+2018-03-12 19:17:42.107 -03 [70182] FATAL:  database "autocarro_app_development" does not exist
+2018-03-12 19:18:23.664 -03 [70201] ERROR:  relation "trip_bus_stops" does not exist at character 566
+2018-03-12 19:18:23.664 -03 [70201] STATEMENT:                SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+	                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
+	                     c.collname, col_description(a.attrelid, a.attnum) AS comment
+	                FROM pg_attribute a
+	                LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+	                LEFT JOIN pg_type t ON a.atttypid = t.oid
+	                LEFT JOIN pg_collation c ON a.attcollation = c.oid AND a.attcollation <> t.typcollation
+	               WHERE a.attrelid = '"trip_bus_stops"'::regclass
+	                 AND a.attnum > 0 AND NOT a.attisdropped
+	               ORDER BY a.attnum
+	
+2018-03-12 19:18:23.666 -03 [70201] ERROR:  relation "trip_bus_stops" does not exist at character 566
+2018-03-12 19:18:23.666 -03 [70201] STATEMENT:                SELECT a.attname, format_type(a.atttypid, a.atttypmod),
+	                     pg_get_expr(d.adbin, d.adrelid), a.attnotnull, a.atttypid, a.atttypmod,
+	                     c.collname, col_description(a.attrelid, a.attnum) AS comment
+	                FROM pg_attribute a
+	                LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+	                LEFT JOIN pg_type t ON a.atttypid = t.oid
+	                LEFT JOIN pg_collation c ON a.attcollation = c.oid AND a.attcollation <> t.typcollation
+	               WHERE a.attrelid = '"trip_bus_stops"'::regclass
+	                 AND a.attnum > 0 AND NOT a.attisdropped
+	               ORDER BY a.attnum
+	
+2018-03-12 19:20:20.997 -03 [70234] ERROR:  database "autocarro_app_development" already exists
+2018-03-12 19:20:20.997 -03 [70234] STATEMENT:  CREATE DATABASE "autocarro_app_development" ENCODING = 'unicode'
+2018-03-12 19:20:21.016 -03 [70235] ERROR:  database "autocarro_app_test" already exists
+2018-03-12 19:20:21.016 -03 [70235] STATEMENT:  CREATE DATABASE "autocarro_app_test" ENCODING = 'unicode'
+2018-03-12 20:43:42.578 -03 [72362] ERROR:  column connections.start_stop_id does not exist at character 43
+2018-03-12 20:43:42.578 -03 [72362] STATEMENT:  SELECT  1 AS one FROM "connections" WHERE "connections"."start_stop_id" = '' AND "connections"."end_stop_id" = '1' LIMIT $1
+2018-03-12 20:46:32.853 -03 [72945] ERROR:  relation "start_stop_ids" does not exist
+2018-03-12 20:46:32.853 -03 [72945] STATEMENT:  CREATE TABLE "connections" ("id" bigserial primary key, "trip_duration" integer, "start_stop_id_id" bigint, "end_stop_id_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_bcb5680cc0"
+	FOREIGN KEY ("start_stop_id_id")
+	  REFERENCES "start_stop_ids" ("id")
+	, CONSTRAINT "fk_rails_5dd39410a1"
+	FOREIGN KEY ("end_stop_id_id")
+	  REFERENCES "end_stop_ids" ("id")
+	)
+2018-03-12 21:15:26.599 -03 [73936] ERROR:  update or delete on table "trips" violates foreign key constraint "fk_rails_31b6a8f6cd" on table "trip_bus_stops"
+2018-03-12 21:15:26.599 -03 [73936] DETAIL:  Key (id)=(1) is still referenced from table "trip_bus_stops".
+2018-03-12 21:15:26.599 -03 [73936] STATEMENT:  DELETE FROM "trips" WHERE "trips"."id" = $1
+2018-03-12 21:16:48.074 -03 [74016] ERROR:  database "autocarro_app_development" is being accessed by other users
+2018-03-12 21:16:48.074 -03 [74016] DETAIL:  There is 1 other session using the database.
+2018-03-12 21:16:48.074 -03 [74016] STATEMENT:  DROP DATABASE IF EXISTS "autocarro_app_development"
+2018-03-12 21:48:04.301 -03 [74485] ERROR:  column connections.start does not exist at character 50
+2018-03-12 21:48:04.301 -03 [74485] STATEMENT:  SELECT  "connections".* FROM "connections" WHERE "connections"."start" = 1 AND "connections"."end" = 2 ORDER BY "connections"."id" ASC LIMIT $1

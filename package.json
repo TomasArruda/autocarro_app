@@ -1,0 +1,12 @@
+{
+  "name": "autocarro_app",
+  "private": true,
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-rails-form-helpers": "0.1.0-beta.13"
+  },
+  "devDependencies": {
+    "create-react-class": "^15.6.3"
+  }
+}

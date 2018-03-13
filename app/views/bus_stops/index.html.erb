@@ -1,0 +1,28 @@
+<h1>Listing Bus Stops</h1>
+<%= link_to 'New bus stop', new_bus_stop_path %>
+<table>
+  <tr>Identifier</th>
+  </tr>
+  <% @bus_stops.each do |bus_stop| %>
+    <tr>
+      <td>
+        <%= bus_stop.identifier %>
+      </td>
+      <td>
+        <%= link_to 'Show', bus_stop_path(bus_stop) %>
+      </td>
+      <td>
+        <%= link_to 'Edit', edit_bus_stop_path(bus_stop) %>
+      </td>
+      <td>
+        <%= link_to 'Destroy', bus_stop_path(bus_stop),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }
+        %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= link_to 'buses', buses_path %>
+<%= link_to 'trips', trips_path %>
+

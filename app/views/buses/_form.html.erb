@@ -1,0 +1,31 @@
+<%= form_with model: @bus, local: true do |form| %> 
+  <% if @bus.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@bus.errors.count, "error") %> prohibited
+        this bus from being saved:
+      </h2>
+      <ul>
+        <% @bus.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ 
+  <p>
+    <%= form.label :registration_number %><br>
+    <%= form.text_field :registration_number, :value => @bus.registration_number %>
+  </p>
+
+    <p>
+      <%= form.collection_select :trip, @trips || [], 
+        :id, :identifier,
+          { multiple: false } %>
+      <p>
+    </p>
+ 
+    <%= form.submit %>
+  </p>
+ 
+<% end %>

@@ -1,0 +1,29 @@
+<h1>Listing Trips</h1>
+<%= link_to 'New trip', new_trip_path %>
+<table>
+  <tr>
+    <th>Identifier</th>
+  </tr>
+  <% @trips.each do |trip| %>
+    <tr>
+      <td>
+        <%= trip.identifier %>
+      </td>
+      <td>
+        <%= link_to 'Show', trip_path(trip) %>
+      </td>
+      <td>
+        <%= link_to 'Edit', edit_trip_path(trip) %>
+      </td>
+      <td>
+        <%= link_to 'Destroy', trip_path(trip),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }
+        %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= link_to 'buses', buses_path %>
+<%= link_to 'trips', bus_stops_path %>
+

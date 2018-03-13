@@ -1,0 +1,25 @@
+<%= form_with model: @bus_stop, local: true do |form| %> 
+  <% if @bus_stop.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@bus_stop.errors.count, "error") %> prohibited
+        this bus_stop from being saved:
+      </h2>
+      <ul>
+        <% @bus_stop.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ 
+  <p>
+    <%= form.label :identifier %><br>
+    <%= form.text_field :identifier, :value => @bus_stop.identifier %>
+  </p>
+ 
+  <p>
+    <%= form.submit %>
+  </p>
+ 
+<% end %>
