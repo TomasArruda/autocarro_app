@@ -1,12 +1,14 @@
 {
-  "name": "autocarro_app",
+  "name": "react-webpack-rails-tutorial",
+  "version": "0.0.1",
   "private": true,
-  "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-rails-form-helpers": "0.1.0-beta.13"
+  "engines": {
+    "node": "6.9.0",
+    "npm": "4.1.1"
   },
-  "devDependencies": {
-    "create-react-class": "^15.6.3"
+  "scripts": {
+    "postinstall": "cd client && yarn install",
+    "rails-server": "echo 'visit http://localhost:3000/hello_world' && foreman start -f Procfile.dev",
+    "test": "rspec"
   }
 }

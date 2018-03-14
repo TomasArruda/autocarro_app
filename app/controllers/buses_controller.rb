@@ -9,21 +9,21 @@ class BusesController < ApplicationController
   end
 
   def new
-    @bus = Bus.new
-    get_trips
+    new_setup
   end
 
   def create
-    byebug
-    @bus = Bus.new()
+    @bus = Bus.new
     @bus.registration_number = bus_params[:registration_number]
     @bus.trip = Trip.find(bus_params[:trip])
+    @bus.schedule = Schedule.find(bus_params[:schedule])
 
     respond_to do |format|
       if @bus.save
         format.html { redirect_to @bus, notice: 'Bus was successfully created.' }
         format.json { render json: Bus.all.order(:registration_number) }
       else
+        new_setup
         format.html { render :new }
         format.json { render json: @bus.errors, status: :unprocessable_entity }
       end
@@ -31,15 +31,20 @@ class BusesController < ApplicationController
   end
 
   def edit
-    get_trips
+    edit_setup
   end
 
   def update
+    @bus.registration_number = bus_params[:registration_number]
+    @bus.trip = Trip.find(bus_params[:trip])
+    @bus.schedule = Schedule.find(bus_params[:schedule])
+
     respond_to do |format|
-      if @bus.update(bus_params)
+      if @bus.save
         format.html { redirect_to @bus, notice: 'Bus was successfully updated.' }
         format.json { render json: Bus.all.order(:registration_number) }
       else
+        edit_setup
         format.html { render :edit }
         format.json { render json: @bus.errors, status: :unprocessable_entity }
       end
@@ -59,11 +64,35 @@ class BusesController < ApplicationController
     @bus = Bus.find(params[:id])
   end
 
+  def new_setup
+    @bus = Bus.new
+    get_trips
+    build_trips_schedules
+
+    @trip_id = "null"
+    @schedule_id = "null"
+  end
+
+  def edit_setup
+    get_trips
+    build_trips_schedules
+
+    @trip_id = @bus.trip.try(:id)
+    @schedule_id = @bus.schedule.try(:id)
+  end
+
   def get_trips
     @trips = Trip.all
   end
 
+  def build_trips_schedules
+    @trips_schedules = {}
+    @trips.each do |trip|
+      @trips_schedules[:"#{trip.id}"] = trip.schedules.select { |schedule| schedule.bus == nil}
+    end
+  end
+
   def bus_params
-    params.require(:bus).permit(:registration_number, :trip)
+    params.require(:bus).permit(:registration_number, :trip, :schedule)
   end
 end

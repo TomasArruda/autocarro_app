@@ -120,3 +120,22 @@
 2018-03-12 21:16:48.074 -03 [74016] STATEMENT:  DROP DATABASE IF EXISTS "autocarro_app_development"
 2018-03-12 21:48:04.301 -03 [74485] ERROR:  column connections.start does not exist at character 50
 2018-03-12 21:48:04.301 -03 [74485] STATEMENT:  SELECT  "connections".* FROM "connections" WHERE "connections"."start" = 1 AND "connections"."end" = 2 ORDER BY "connections"."id" ASC LIMIT $1
+2018-03-13 09:40:12.806 -03 [89087] ERROR:  column buses.bus_id does not exist at character 38
+2018-03-13 09:40:12.806 -03 [89087] STATEMENT:  SELECT  "buses".* FROM "buses" WHERE "buses"."bus_id" = $1 LIMIT $2
+2018-03-13 09:41:37.660 -03 [89087] ERROR:  column buses.bus_id does not exist at character 38
+2018-03-13 09:41:37.660 -03 [89087] STATEMENT:  SELECT  "buses".* FROM "buses" WHERE "buses"."bus_id" = $1 LIMIT $2
+2018-03-13 13:11:33.264 -03 [93296] ERROR:  column connections.end_time does not exist at character 82
+2018-03-13 13:11:33.264 -03 [93296] STATEMENT:  SELECT  1 AS one FROM "connections" WHERE "connections"."start_stop_id" = $1 AND "connections"."end_time" IS NULL LIMIT $2
+2018-03-13 13:11:54.193 -03 [93296] ERROR:  column connections.end_time does not exist at character 82
+2018-03-13 13:11:54.193 -03 [93296] STATEMENT:  SELECT  1 AS one FROM "connections" WHERE "connections"."start_stop_id" = $1 AND "connections"."end_time" IS NULL LIMIT $2
+2018-03-13 13:13:20.827 -03 [93296] ERROR:  column connections.end_time does not exist at character 82
+2018-03-13 13:13:20.827 -03 [93296] STATEMENT:  SELECT  1 AS one FROM "connections" WHERE "connections"."start_stop_id" = $1 AND "connections"."end_time" IS NULL LIMIT $2
+2018-03-13 23:53:02.859 -03 [8982] ERROR:  type "hstore" does not exist at character 8
+2018-03-13 23:53:02.859 -03 [8982] STATEMENT:  SELECT 'hstore'::regtype::oid
+2018-03-13 23:53:36.919 -03 [9010] ERROR:  type "hstore" does not exist at character 8
+2018-03-13 23:53:36.919 -03 [9010] STATEMENT:  SELECT 'hstore'::regtype::oid
+2018-03-13 23:53:56.434 -03 [9023] ERROR:  type "hstore" does not exist at character 8
+2018-03-13 23:53:56.434 -03 [9023] STATEMENT:  SELECT 'hstore'::regtype::oid
+2018-03-13 23:54:43.754 -03 [9042] ERROR:  database "autocarro_app_development" is being accessed by other users
+2018-03-13 23:54:43.754 -03 [9042] DETAIL:  There are 2 other sessions using the database.
+2018-03-13 23:54:43.754 -03 [9042] STATEMENT:  DROP DATABASE IF EXISTS "autocarro_app_development"

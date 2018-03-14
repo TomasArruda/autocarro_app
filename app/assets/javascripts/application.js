@@ -1,3 +1,5 @@
+//= require webpack-bundle
+
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -10,12 +12,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require bootstrap-sprockets
 //= require rails-ujs
 //= require jquery
 //= require turbolinks
-//= require react
-//= require react_ujs
-//= require components
-//= require_tree .
-
+//= require bootstrap-sprockets
+//= require sigma.min.js
+//= require sigma.parsers.json.min.js
+//= require cytoscape.min.js

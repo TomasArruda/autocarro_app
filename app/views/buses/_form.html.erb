@@ -1,31 +1,72 @@
-<%= form_with model: @bus, local: true do |form| %> 
-  <% if @bus.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@bus.errors.count, "error") %> prohibited
-        this bus from being saved:
-      </h2>
-      <ul>
-        <% @bus.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
- 
-  <p>
-    <%= form.label :registration_number %><br>
-    <%= form.text_field :registration_number, :value => @bus.registration_number %>
-  </p>
+<script>
+    function select_trip(selectElem) {
+      var trip_id = selectElem.options[selectElem.selectedIndex].value;
+      
+      var previous_schedules = document.getElementsByClassName("schedules-dropdown");
 
+      for (var i = 0; i < previous_schedules.length; i++) {
+        previous_schedules[i].style.display = 'none';
+      }
+      
+      document.getElementById("dropdown_schedules_"+trip_id).style.display = 'block';
+    }
+
+    function load_dropdows(trip_id, schedule_id) {
+      if(trip_id !== null || schedule_id !== null){
+        document.getElementById("dropdown_trips").value = trip_id;
+        document.getElementById("dropdown_schedules_"+trip_id).style.display = 'block';
+
+        var dropdows = document.getElementsByClassName("dropdown_schedule");
+        for (var i = 0; i < dropdows.length; i++) {
+          if(dropdows[i].parentNode.style.display === 'block'){
+            dropdows[i].value = schedule_id;
+          }
+        }
+      }
+    }
+</script>
+
+<body onload=<%="load_dropdows(#{@trip_id},#{@schedule_id});"%>>
+  <%= form_with model: @bus, local: true do |form| %> 
+    <% if @bus.errors.any? %>
+      <div id="error_explanation">
+        <h2>
+          <%= pluralize(@bus.errors.count, "error") %> prohibited
+          this bus from being saved:
+        </h2>
+        <ul>
+          <% @bus.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
     <p>
-      <%= form.collection_select :trip, @trips || [], 
-        :id, :identifier,
-          { multiple: false } %>
-      <p>
+      <%= form.label :registration_number %><br>
+      <%= form.text_field :registration_number, :value => @bus.registration_number %>
     </p>
- 
-    <%= form.submit %>
-  </p>
- 
-<% end %>
+
+      <p>
+        <div class="trips-dropdown" >
+          <%= form.collection_select :trip, @trips || [], 
+            :id, :identifier,
+              { multiple: false }, { :id => "dropdown_trips",  :onchange => "select_trip(this)" } %>
+          <p>
+        </div>
+      </p>
+  
+      <% @trips_schedules.each do |key, schedules| %>
+        <div class="schedules-dropdown" style="display:none" id=<%="dropdown_schedules_#{key}"%> >
+          <%= form.collection_select :schedule, schedules || [], 
+            :id, :short_start_time,
+              { multiple: false }, { class: "dropdown_schedule" }%>
+          <p>
+        </div>
+      <% end %>
+  
+      <%= form.submit %>
+    </p>
+  
+  <% end %>
+</body>

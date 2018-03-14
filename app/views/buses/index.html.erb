@@ -1,2 +1,30 @@
-<%= react_component("BusesContainer", {buses: @buses}, {prerender: true}) %>
+<h1>Listing Buses</h1>
+<%= link_to 'New bus', new_bus_path %>
+<table>
+  <tr>
+    <th>Registration Number</th>
+  </tr>
+  <% @buses.each do |bus| %>
+    <tr>
+      <td>
+        <%= bus.registration_number %>
+      </td>
+      <td>
+        <%= link_to 'Show', bus_path(bus) %>
+      </td>
+      <td>
+        <%= link_to 'Edit', edit_bus_path(bus) %>
+      </td>
+      <td>
+        <%= link_to 'Destroy', bus_path(bus),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }
+        %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= link_to 'bus stops', bus_stops_path %>
+<%= link_to 'trips', trips_path %>
+<%= link_to 'gps', gps_path %>
 

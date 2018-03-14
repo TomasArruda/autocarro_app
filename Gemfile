@@ -39,11 +39,17 @@ gem "cancan"
 
 gem 'devise'
 
-gem "react_on_rails", "~> 6"
+gem 'webpacker'
+
+gem 'react-rails'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 
 gem 'babel-transpiler'
+
+gem "cancan"
+
+gem 'jquery-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -66,3 +72,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'mini_racer', platforms: :ruby

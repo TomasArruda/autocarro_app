@@ -25,6 +25,7 @@ class TripsController < ApplicationController
     respond_to do |format|
       if @trip.save
         BuildConnections.call(bus_stops: @trip.bus_stops)
+        BuildSchedules.call(trip: @trip)
 
         format.html { redirect_to @trip, notice: 'Trip was successfully created.' }
         format.json { render json: Trip.all.order(:registration_number) }
@@ -68,7 +69,6 @@ class TripsController < ApplicationController
     @bus_stops = BusStop.all
     @trip_bus_stop = @trip.trip_bus_stop.build
   end
-
 
   def trip_params
     params.require(:trip).permit(:identifier, :bus_stops => [])
