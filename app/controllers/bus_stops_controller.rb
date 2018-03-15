@@ -16,13 +16,7 @@ class BusStopsController < ApplicationController
     @bus_stop = BusStop.new(bus_stop_params)
 
     respond_to do |format|
-      if @bus_stop.save
-        format.html { redirect_to @bus_stop, notice: 'Bus stop was successfully created.' }
-        format.json { render json: BusStop.all.order(:registration_number) }
-      else
-        format.html { render :new }
-        format.json { render json: @bus_stop.errors, status: :unprocessable_entity }
-      end
+      save_bus_stop(format, 'Bus stop was successfully created.')
     end
   end
 
@@ -31,13 +25,7 @@ class BusStopsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @bus_stop.update(bus_stop_params)
-        format.html { redirect_to @bus_stop, notice: 'Bus stop was successfully updated.' }
-        format.json { render json: BusStop.all.order(:identifier) }
-      else
-        format.html { render :edit }
-        format.json { render json: @bus_stop.errors, status: :unprocessable_entity }
-      end
+      save_bus_stop(format, 'Bus stop was successfully updated.')
     end
   end
 
@@ -49,6 +37,16 @@ class BusStopsController < ApplicationController
   end
 
   private
+
+  def save_bus_stop(format, message)
+    if @bus_stop.save      
+      format.html { redirect_to @bus_stop, notice: message }
+      format.json { render json: BusStop.all.order(:identifier) }
+    else
+      format.html { render :edit }
+      format.json { render json: @bus_stop.errors, status: :unprocessable_entity }
+    end
+  end
 
   def set_bus_stop
     @bus_stop = BusStop.find(params[:id])

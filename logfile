@@ -139,3 +139,32 @@
 2018-03-13 23:54:43.754 -03 [9042] ERROR:  database "autocarro_app_development" is being accessed by other users
 2018-03-13 23:54:43.754 -03 [9042] DETAIL:  There are 2 other sessions using the database.
 2018-03-13 23:54:43.754 -03 [9042] STATEMENT:  DROP DATABASE IF EXISTS "autocarro_app_development"
+2018-03-15 16:43:45.048 -03 [46973] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:47:45.017 -03 [48227] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:48:26.794 -03 [48264] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:48:55.014 -03 [48280] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:49:29.800 -03 [48292] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:49:50.043 -03 [48322] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:50:31.360 -03 [48341] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:51:32.135 -03 [48358] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 16:51:55.224 -03 [48394] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:01:52.801 -03 [48407] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:02:21.430 -03 [48616] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:02:59.922 -03 [48628] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:04:13.730 -03 [48651] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:05:57.806 -03 [48689] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:08:00.925 -03 [48732] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:17:28.547 -03 [48763] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:18:47.136 -03 [48959] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:27:11.416 -03 [49190] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:51:14.155 -03 [49541] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 17:59:58.321 -03 [49699] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 18:02:34.955 -03 [49864] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 18:03:07.250 -03 [49869] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 18:06:30.770 -03 [49878] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 18:10:31.924 -03 [50097] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 19:01:03.670 -03 [51523] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 19:14:33.910 -03 [52016] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 19:20:04.394 -03 [52174] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 19:24:24.178 -03 [52386] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 19:38:36.925 -03 [52675] LOG:  unexpected EOF on client connection with an open transaction

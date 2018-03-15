@@ -1,120 +1,187 @@
 <!doctype html>
 
 <html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
 
-<head>
-    <script src="cytoscape.js"></script>
-</head>
+    <style>
+      body {
+				font-family: helvetica;
+				font-size: 14px;
+			}
 
-<style>
-    #cy {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-    }
-</style>
-<body>
+			#cy {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 999;
+			}
 
-  <div id="buses_position", style="display: none;" value=<%= @buses_position.to_json %>></div>
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+			}
 
-    <div id="cy"></div>
-    
+			.cxtmenu-disabled {
+				opacity: 0.333;
+			}
+    </style>
     <script>
-    
-      var bus_map = JSON.parse(document.getElementById('buses_position').getAttribute('value'));
-
-      function mountElements(bus_map){
-        var elements = [];
-        var bus_stops = bus_map.bus_stops;
-
-        elements = elements.concat(mountBusStops(bus_map))
-        elements = elements.concat(mountBuses(bus_map))
-        elements = elements.concat(mountConnections(bus_map))
-        
-        return elements;
-      };
-
-      function mountBusStops(bus_map){
-        var elements = [];
-        var bus_stops = bus_map.bus_stops;
-
-        for(var i = 0; i < bus_stops.length; i++){
-          elements.push(
-            { data: { id: bus_stops[i], classes: 'bus-stop' } }
-          );
-        }
-        
-        return elements;
-      };
-
-      function mountBuses(bus_map){
-        var elements = [];
-        var buses = bus_map.buses;
-
-        for(var i = 0; i < buses.length; i++){
-          elements.push(
-            { data: { id: "bus "+i, classes: 'bus' } }
-          );
-        }
-
-        return elements;
-      };
-
-      function mountConnections(bus_map){
-        var elements = [];
-        var connections = bus_map.connections;
-
-        for(var i = 0; i < connections.length; i++){
-          var start = connections[i].start;
-          var next = connections[i].next;
-          elements.push(
-            { data: { id: start+next, source: start, target: next, classes: 'connection' } }
-          );
-        }
-
-        return elements;
-      };
-
-      var elements = mountElements(bus_map);
-      console.log(elements);
-
-      var cy = cytoscape({
-        container: document.getElementById('cy'),
-          elements: elements,
-          style: [ 
-            {
-              selector: '.pa',
-              style: {
-                'background-color': '#666',
-                'label': 'data(id)'
-              }
-            },
-
-            {
-              selector: '.bob',
-              style: {
-                'background-color': 'red',
-                'label': 'data(id)'
-              }
-            },
-
-            {
-              selector: 'edge',
-              style: {
-                'width': 3,
-                'line-color': '#ccc',
-                'target-arrow-color': '#ccc',
-                'target-arrow-shape': 'triangle'
-              }
+      window.addEventListener('DOMContentLoaded', function(){
+        var bus_map = JSON.parse(document.getElementById('bus_map').getAttribute('value'));
+        var style = [ 
+          {
+            selector: 'node',
+            style: {
+              'background-color': '#666',
+              'content': 'data(id)'
             }
-          ],
-          layout: {
-            name: 'grid',
-            rows: 1
-          }     
+          },
+          {
+            selector: 'edge',
+            style: {
+              'target-arrow-shape': 'triangle'
+            }
+          }
+        ];
+
+        function setBusNodeStyle(nodeId){
+          return {
+            selector: '#'+nodeId,
+            style: {
+              'background-color': 'red',
+              'content': 'data(distance)'
+            }
+          }
+        }
+        var layout = {
+          name: 'cose',
+          rows: 1
+        }  
+
+        function mountElements(bus_map){
+          var elements = [];
+          
+          elements = elements.concat(mountBusStops(bus_map))
+          elements = elements.concat(mountBuses(bus_map))
+          elements = elements.concat(mountConnections(bus_map))
+          
+          return elements;
+        };
+
+        function mountBusStops(bus_map){
+          var elements = [];
+          var bus_stops = bus_map.buses_positions.bus_stops;
+
+          var origin = bus_map.origin;
+          var destiny = bus_map.destiny
+
+          for(var i = 0; i < bus_stops.length; i++){
+            var classes = "bus-stop";
+
+            if(bus_stops[i] === origin ){
+              classes = classes+ " origin-stop"
+            }
+            if(bus_stops[i] === destiny){
+              classes = classes+ "destiny-stop"
+            }
+            
+            elements.push(mountNode(bus_stops[i], classes));
+          }
+          
+          return elements;
+        };
+
+        function mountBuses(bus_map){
+          var elements = [];
+          var buses = bus_map.buses_positions.buses;
+
+          for(var i = 0; i < buses.length; i++){
+            var nodeId = "bus_"+i;
+            var distance = buses[i].distance;
+            var source = buses[i].position.start;
+            var target = buses[i].position.next;
+            console.log(buses[i])
+            
+            style.push(setBusNodeStyle(nodeId))
+            elements.push(mountNode(nodeId, "bus", distance));
+            elements.push(mountEdge(source+nodeId, source, nodeId, "bus-path"));
+            elements.push(mountEdge(nodeId+target, nodeId, target, "bus-path"));
+          }
+
+          return elements;
+        };
+
+        function mountConnections(bus_map){
+          var elements = [];
+          var busPaths = BusPathConnection(bus_map);
+          var connections = bus_map.buses_positions.connections;
+
+          for(var i = 0; i < connections.length; i++){
+            var start = connections[i].start;
+            var next = connections[i].next;
+            var busPath = start+"-"+next
+            
+            if (!busPaths.includes(busPath)){
+              elements.push(mountEdge(start+next, start, next, 'connection'));
+            }
+          }
+
+          return elements;
+        };
+
+        function BusPathConnection(bus_map){
+          var buses = bus_map.buses_positions.buses;
+          var busPaths = []
+
+          for(var i = 0; i < buses.length; i++){
+            var start = buses[i].position.start;
+            var next = buses[i].position.next;
+            
+            busPaths.push(start+"-"+next);
+            busPaths.push(next+"-"+start);
+          }
+
+          return busPaths
+        };
+
+        function mountNode(id, classes, distace=0){
+          return { 
+            data: { 
+              id: id,
+              classes: classes,
+              distance: distace+'m',
+            }
+          }
+        };
+
+        function mountEdge(id, source, target, classes){
+          return { 
+            data: { 
+              id: id,
+              source: source,
+              target: target, 
+              classes: classes 
+            }
+          }
+        };
+
+        var elements = mountElements(bus_map);
+        var cy = cytoscape({
+          container: document.getElementById('cy'),
+            elements: elements,
+            style: style,
+            layout: layout  
+        });        
       });
     </script>
-</body>
+  </head>
+
+  <body>
+    <h1>Bus Map</h1>
+    <div id="bus_map", style="display: none;" value=<%= @bus_map.to_json %>></div>
+    <div id="cy"></div>
+  </body>
 </html>

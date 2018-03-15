@@ -10,45 +10,27 @@ class TripsController < ApplicationController
 
   def new
     @trip = Trip.new
-    get_bus_stop
+    get_bus_stops
   end
 
   def create
-    @trip = Trip.new(identifier: trip_params[:identifier])
-
-    trip_params[:bus_stops].each do |bus_stop_id|
-      unless bus_stop_id.empty?
-        @trip.trip_bus_stop.build(bus_stop_id: bus_stop_id)
-      end
-    end
-
+    @trip = BuildTrip.call(params: trip_params).trip
+    
     respond_to do |format|
-      if @trip.save
-        BuildConnections.call(bus_stops: @trip.bus_stops)
-        BuildSchedules.call(trip: @trip)
-
-        format.html { redirect_to @trip, notice: 'Trip was successfully created.' }
-        format.json { render json: Trip.all.order(:registration_number) }
-      else
-        format.html { render :new }
-        format.json { render json: @trip.errors, status: :unprocessable_entity }
-      end
+      save_trip(format, 'Trip was successfully created.')
     end
   end
 
   def edit
-    get_bus_stop
+    get_bus_stops
   end
 
   def update
+    get_bus_stops
+    UpdateTrip.call(trip: @trip, params: trip_params)
+
     respond_to do |format|
-      if @trip.update(trip_params)
-        format.html { redirect_to @trip, notice: 'Trip was successfully updated.' }
-        format.json { render json: Trip.all.order(:registration_number) }
-      else
-        format.html { render :edit }
-        format.json { render json: @trip.errors, status: :unprocessable_entity }
-      end
+      save_trip(format, 'Trip was successfully updated.')
     end
   end
 
@@ -61,11 +43,24 @@ class TripsController < ApplicationController
 
   private
 
+  def save_trip(format, message)
+    if @trip.save
+      BuildConnections.call(bus_stops: @trip.bus_stops)
+      BuildSchedules.call(trip: @trip)
+      
+      format.html { redirect_to @trip, notice: message }
+      format.json { render json: Trip.all.order(:identifier) }
+    else
+      format.html { render :edit }
+      format.json { render json: @trip.errors, status: :unprocessable_entity }
+    end
+  end
+
   def set_trip
     @trip = Trip.find(params[:id])
   end
 
-  def get_bus_stop
+  def get_bus_stops
     @bus_stops = BusStop.all
     @trip_bus_stop = @trip.trip_bus_stop.build
   end

@@ -1,5 +1,5 @@
 class BusesController < ApplicationController
-  before_action :set_bus, only: [:show, :edit, :update, :destroy]
+  before_action :get_bus, only: [:show, :edit, :update, :destroy]
 
   def index
     @buses = Bus.all
@@ -13,20 +13,13 @@ class BusesController < ApplicationController
   end
 
   def create
-    @bus = Bus.new
-    @bus.registration_number = bus_params[:registration_number]
+    @bus = Bus.new(registration_number: bus_params[:registration_number])
+
     @bus.trip = Trip.find(bus_params[:trip])
     @bus.schedule = Schedule.find(bus_params[:schedule])
 
     respond_to do |format|
-      if @bus.save
-        format.html { redirect_to @bus, notice: 'Bus was successfully created.' }
-        format.json { render json: Bus.all.order(:registration_number) }
-      else
-        new_setup
-        format.html { render :new }
-        format.json { render json: @bus.errors, status: :unprocessable_entity }
-      end
+      save_bus(format, 'Bus was successfully created.')
     end
   end
 
@@ -40,14 +33,7 @@ class BusesController < ApplicationController
     @bus.schedule = Schedule.find(bus_params[:schedule])
 
     respond_to do |format|
-      if @bus.save
-        format.html { redirect_to @bus, notice: 'Bus was successfully updated.' }
-        format.json { render json: Bus.all.order(:registration_number) }
-      else
-        edit_setup
-        format.html { render :edit }
-        format.json { render json: @bus.errors, status: :unprocessable_entity }
-      end
+      save_bus(format, 'Bus was successfully updated.')
     end
   end
 
@@ -59,6 +45,16 @@ class BusesController < ApplicationController
   end
 
   private
+
+  def save_bus(format, message)
+    if @bus.save      
+      format.html { redirect_to @bus, notice: message }
+      format.json { render json: Bus.all.order(:registration_number) }
+    else
+      format.html { render :edit }
+      format.json { render json: @bus.errors, status: :unprocessable_entity }
+    end
+  end
 
   def set_bus
     @bus = Bus.find(params[:id])

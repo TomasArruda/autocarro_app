@@ -19,3 +19,4 @@
 //= require sigma.min.js
 //= require sigma.parsers.json.min.js
 //= require cytoscape.min.js
+//= require cytoscape-cxtmenu.js

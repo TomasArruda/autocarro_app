@@ -8,13 +8,20 @@ class GpsController < ApplicationController
     @bus_stop_destiny = BusStop.find(params[:bus_stop_destiny][:id])
     @trip = Trip.find(params[:trip][:id])
 
+    @bus_map = {
+      origin: @bus_stop_origin.identifier,
+      destily: @bus_stop_destiny.identifier
+    }
+    
     bus_stops_ids = @trip.bus_stops.map(&:identifier)
     if bus_stops_ids.include?(@bus_stop_origin.identifier) || bus_stops_ids.include?(@bus_stop_destiny.identifier)
-      @buses_position = CalculateBusesPosition.call(
+      buses_position = CalculateBusesPosition.call(
         start_stop: @bus_stop_origin, 
         end_stop: @bus_stop_destiny, 
         trip: @trip,
       ).buses_position
+
+      @bus_map[:buses_positions] = buses_position
 
       render :map
     else

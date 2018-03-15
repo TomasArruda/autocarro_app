@@ -10,22 +10,28 @@ class BuildSchedules
 
   private
 
-  attr_accessor :trip, :duration_and_resting, :connections
+  attr_accessor :trip, :bus_stops, :duration_and_resting, :connections
 
   def build_schedules
     departs = depart_schedules
     finishes = finish_schedules
 
+    destroy_old_schedules
+    
     (0..(number_of_buses - 1)).each do |index|
       Schedule.new(
         trip: trip, 
         start_time: departs[index], 
         end_time: finishes[index],
-        timetable_from_station: build_timetable_from_station(departs[index], finishes[index]),
-        timetable_to_station: build_timetable_to_station(departs[index], finishes[index]),
+        timetable_from_station: build_timetable(schedules_from_station(departs[index]), finishes[index]),
+        timetable_to_station: build_timetable(schedules_to_station(departs[index]), finishes[index]),
         bus_interval: Trip::MINIMUM_BUS_INTERVAL
       ).save
     end
+  end
+
+  def destroy_old_schedules
+    Schedule.where(trip: trip).delete_all
   end
 
   def depart_schedules
@@ -56,43 +62,37 @@ class BuildSchedules
     schedules
   end
 
-  def build_timetable_from_station(depart, finishes)
+  def build_timetable(schedules, finishes)
     timetable = {}
-    schedules_from_station(depart).each do |bus_stop_depart|
-      timetable[:"#{bus_stop_depart[:bus_stop].id}"] = full_bus_stop_schedule(bus_stop_depart[:depart], finishes)
-    end
-    timetable
-  end
-
-  def build_timetable_to_station(depart, finishes)
-    timetable = {}
-    schedules_to_station(depart).each do |bus_stop_depart|
+    schedules.each do |bus_stop_depart|
       timetable[:"#{bus_stop_depart[:bus_stop].id}"] = full_bus_stop_schedule(bus_stop_depart[:depart], finishes)
     end
     timetable
   end
 
   def schedules_from_station(depart)
-    bus_stops = trip.bus_stops
-    bus_stop_departs = [{ bus_stop: bus_stops.first, depart: depart }]
-    (0..(bus_stops.length - 2)).to_a.each do |index|
-      start_stop = bus_stops[index]
-      next_stop = bus_stops[index+1]
-      duration = connection_duration(start_stop, next_stop)
-      depart = depart + duration
-      
-      bus_stop_departs << { bus_stop: next_stop, depart: depart }
-    end
-    bus_stop_departs
+    first_depart = { bus_stop: bus_stops.first, depart: depart }
+    indexes = (0..(bus_stops.length - 2)).to_a
+
+    build_bus_stop_departs(indexes, first_depart, depart)
   end
 
   def schedules_to_station(depart)
-    bus_stops = trip.bus_stops
+    first_depart = { bus_stop: bus_stops.last, depart: depart }
+    indexes = (1..(bus_stops.length - 1)).to_a.reverse.to_a
     depart = depart + trip.half_way_duration
-    bus_stop_departs = [{ bus_stop: bus_stops.last, depart: depart }]
-    (1..(bus_stops.length - 1)).to_a.reverse.to_a.each do |index|
+
+    build_bus_stop_departs(indexes, first_depart, depart)
+  end
+
+  def build_bus_stop_departs(indexes, first_depart, depart)
+    depart = depart + trip.half_way_duration
+    bus_stop_departs = [first_depart]
+    step = indexes[1]-indexes[0]
+
+    indexes.to_a.reverse.to_a.each do |index|
       start_stop = bus_stops[index]
-      next_stop = bus_stops[index-1]
+      next_stop = bus_stops[index+step]
       duration = connection_duration(start_stop, next_stop)
       depart = depart + duration
 
@@ -127,7 +127,8 @@ class BuildSchedules
 
   def setup
     @trip = context.trip
+    @bus_stops = bus_stops = trip.bus_stops
     @duration_and_resting = trip.duration_and_resting
-    @connections = FetchConnections.call(bus_stops: trip.bus_stops).connections
+    @connections = FetchConnections.call(bus_stops: @bus_stops).connections
   end
 end

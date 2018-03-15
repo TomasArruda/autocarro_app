@@ -12,21 +12,21 @@ class Trip < ApplicationRecord
   validates :trip_bus_stop, length: { minimum: 2, maximum: 10 }
 
   def duration
-    (0..(bus_stops.length - 2)).inject(0) do |duration, index|
+    (0..(bus_stops.length - 2)).inject(0) do |sum_duration, index|
       start_stop = bus_stops[index]
       end_stop = bus_stops[index+1]
 
-      duration + duration_two_ways(start_stop, end_stop)
+      sum_duration + duration_two_ways(start_stop, end_stop)
     end
   end
 
   def half_way_duration
-    (0..(bus_stops.length - 2)).inject(0) do |duration, index|
+    (0..(bus_stops.length - 2)).inject(0) do |sum_duration, index|
       start_stop = bus_stops[index]
       end_stop = bus_stops[index+1]
-
+      
       connection = Connection.where(start_stop: start_stop, end_stop: end_stop).first
-      duration + connection.trip_duration.minutes
+      sum_duration + connection.trip_duration.minutes
     end
   end
 

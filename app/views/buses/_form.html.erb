@@ -59,7 +59,7 @@
       <% @trips_schedules.each do |key, schedules| %>
         <div class="schedules-dropdown" style="display:none" id=<%="dropdown_schedules_#{key}"%> >
           <%= form.collection_select :schedule, schedules || [], 
-            :id, :short_start_time,
+            :id, :schedule_time_range,
               { multiple: false }, { class: "dropdown_schedule" }%>
           <p>
         </div>
