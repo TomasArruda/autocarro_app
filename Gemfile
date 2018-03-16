@@ -47,6 +47,7 @@ gem "cancan"
 
 gem 'jquery-rails'
 
+gem 'timecop'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

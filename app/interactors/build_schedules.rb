@@ -111,9 +111,13 @@ class BuildSchedules
   end
 
   def connection_duration(start_stop, next_stop)
-    connections.select do |connection| 
+    connection = connections.select do |connection| 
       connection.start_stop.id == start_stop.id && connection.end_stop.id == next_stop.id
-    end.first.trip_duration.minutes
+    end.first
+    
+    raise "no_connection_found" unless connection
+
+    connection.trip_duration.minutes
   end
 
   def number_of_buses

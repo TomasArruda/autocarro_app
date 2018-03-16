@@ -16,7 +16,7 @@ class BuildTrip
     trip = Trip.new(identifier: params[:identifier])
     bus_stops = params[:bus_stops].reject { |c| c.empty? }
 
-    params[:bus_stops].each do |bus_stop_id|
+    bus_stops.each do |bus_stop_id|
       trip.trip_bus_stop.build(bus_stop_id: bus_stop_id)
     end
     

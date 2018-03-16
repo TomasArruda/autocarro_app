@@ -1,32 +1,37 @@
-<h1>Where you want to go?</h1>
-
-<%= form_tag find_bus_path do %>
-  <%= label_tag :where_are_you %>
-  <%= collection_select :bus_stop_origin, 
-        :id, @bus_stops || [], :id, :identifier,
-          { multiple: false } %></br>
-  <%= label_tag :where_are_you_going %>
-  <%= collection_select :bus_stop_destiny, 
-        :id, @bus_stops || [], :id, :identifier,
-          { multiple: false } %></br>
-  <%= label_tag :what_line %>
-  <%= collection_select :trip, 
-        :id, @trips || [], :id,  :identifier,
-          { multiple: false } %></br>
-
-  <%= submit_tag "search" %>
-<% end %>
-
-<% if can? :manage, :all %>
-  <%= link_to 'bus stops', bus_stops_path %>
-  <%= link_to 'trips', trips_path %>
-  <%= link_to 'buses', buses_path %>
-<%end%>
-
-<% if user_signed_in? %>
-  <%= link_to('Edit registration', edit_user_registration_path) %>
-  <%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
-<% else %>
-  <%= link_to('Register', new_user_registration_path)  %>
-  <%= link_to('Login', new_user_session_path)  %>  
-<% end %>
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div class="container">
+      <div class="row">
+        <h1>Where do you want to go?</h1>
+        <%= form_tag find_bus_path do %>
+          <div class="row">
+            <div class="col s4">
+              <h4>Where are you? </h4>
+                <%= collection_select :bus_stop_origin, 
+                  :id, @bus_stops || [], :id, :identifier,
+                    { multiple: false } %></br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s4">
+              <h4>Where are you heading? </h4>
+                <%= collection_select :bus_stop_destiny, 
+                  :id, @bus_stops || [], :id, :identifier,
+                    { multiple: false } %></br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s4">
+              <h4>What line are you taking?</h4>
+                <%= collection_select :trip, 
+                  :id, @trips || [], :id,  :identifier,
+                    { multiple: false } %></br>
+            </div>
+          </div>
+          <%= submit_tag("search", class: "waves-effect waves-light btn-large") %>
+        <% end %>
+      </div>
+    </div>
+  </body>
+</html>

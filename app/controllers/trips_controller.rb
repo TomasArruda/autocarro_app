@@ -11,9 +11,12 @@ class TripsController < ApplicationController
   def new
     @trip = Trip.new
     get_bus_stops
+    @selected_bus_stops = []
   end
 
   def create
+    byebug
+    @selected_bus_stops = []
     @trip = BuildTrip.call(params: trip_params).trip
     
     respond_to do |format|
@@ -23,10 +26,17 @@ class TripsController < ApplicationController
 
   def edit
     get_bus_stops
+    @selected_bus_stops = @trip.bus_stops
+    selected_bus_stops_ids = @selected_bus_stops.map(&:id)
+    @bus_stops = @bus_stops.select { |bs| !selected_bus_stops_ids.include?(bs.id) }
   end
 
   def update
     get_bus_stops
+    @selected_bus_stops = @trip.bus_stops
+    selected_bus_stops_ids = @selected_bus_stops.map(&:id)
+    @bus_stops = @bus_stops.select { |bs| !selected_bus_stops_ids.include?(bs.id) }
+    
     UpdateTrip.call(trip: @trip, params: trip_params)
 
     respond_to do |format|

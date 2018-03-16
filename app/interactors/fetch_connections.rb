@@ -21,7 +21,7 @@ class FetchConnections
       connections << Connection.where(start_stop: start_stop, end_stop: end_stop).first
       connections << Connection.where(start_stop: end_stop, end_stop: start_stop).first
     end
-    connections
+    connections.compact
   end
 
   def setup

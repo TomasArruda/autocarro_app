@@ -168,3 +168,9 @@
 2018-03-15 19:20:04.394 -03 [52174] LOG:  unexpected EOF on client connection with an open transaction
 2018-03-15 19:24:24.178 -03 [52386] LOG:  unexpected EOF on client connection with an open transaction
 2018-03-15 19:38:36.925 -03 [52675] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 20:15:53.491 -03 [53718] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 21:38:45.242 -03 [55335] LOG:  unexpected EOF on client connection with an open transaction
+2018-03-15 23:08:01.492 -03 [51107] LOG:  received smart shutdown request
+2018-03-15 23:08:01.519 -03 [51107] LOG:  worker process: logical replication launcher (PID 51114) exited with exit code 1
+2018-03-15 23:08:01.519 -03 [51109] LOG:  shutting down
+2018-03-15 23:08:01.562 -03 [51107] LOG:  database system is shut down

@@ -1,30 +1,129 @@
-<%= form_with model: @trip, local: true do |form| %> 
-  <% if @trip.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@trip.errors.count, "error") %> prohibited
-        this trip from being saved:
-      </h2>
-      <ul>
-        <% @trip.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <style>
+      .subject-info-box-1,
+        .subject-info-box-2 {
+            float: left;
+            width: 45%;
+            
+            select {
+                height: 200px;
+                padding: 0;
+                option {
+                    padding: 4px 10px 4px 10px;
+                }
+                option:hover {
+                    background: #EEEEEE;
+                }
+            }
+        }
+        .subject-info-arrows {
+            float: left;
+            width: 10%;
+            input {
+                width: 70%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+    
+    <script>
+      function btnRightClick(e) {
+        var selectedOpts = $('#lstBox1 option:selected');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#lstBox2').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+      };
+
+      function btnAllRightClick(e) {
+        var selectedOpts = $('#lstBox1 option');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#lstBox2').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+      };
+
+      function btnLeftClick(e) {
+        var selectedOpts = $('#lstBox2 option:selected');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#lstBox1').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+      };
+
+      function btnAllLeftClick(e) {
+        var selectedOpts = $('#lstBox2 option');
+        if (selectedOpts.length == 0) {
+            alert("Nothing to move.");
+            e.preventDefault();
+        }
+        $('#lstBox1').append($(selectedOpts).clone());
+        $(selectedOpts).remove();
+      };
+    </script>
+    
+    <div class="container">
+      <div class="row">
+        <%= form_with model: @trip, local: true do |form| %> 
+          <% if @trip.errors.any? %>
+            <div id="error_explanation">
+              <h2>
+                <%= pluralize(@trip.errors.count, "error") %> prohibited
+                this trip from being saved:
+              </h2>
+              <ul>
+                <% @trip.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="col s4">
+              <h4>Identifier </h4>
+                <%= form.number_field :identifier, :value => @trip.identifier %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s4">
+              <%= form.collection_select :bus_stops, @bus_stops || [], 
+                :id, :identifier, { include_blank: false },
+                  { multiple: true } %>
+            </div>
+          </div>
+
+
+
+
+          <div class="subject-info-box-1">
+            <%= form.select( :bus_stops_to_choose, @bus_stops.collect {|p| [p.identifier, p.id ]}, { :selected => "" }, { :multiple => "true", :id => "lstBox1" } )%>
+          </div>
+          <div class="subject-info-arrows text-center">
+            <input type="button" id="btnAllRight" value=">>" class="btn btn-default" onclick="btnAllRightClick(this)" /><br />
+            <input type="button" id="btnRight" value=">" class="btn btn-default" onclick="btnRightClick(this)" /><br />
+            <input type="button" id="btnLeft" value="<" class="btn btn-default" onclick="btnLeftClick(this)" /><br />
+            <input type="button" id="btnAllLeft" value="<<" class="btn btn-default" onclick="btnAllLeftClick(this)" />
+          </div>
+          <div class="subject-info-box-2">
+            <% byebug %>
+            <%= form.select( :bus_stops, [@selected_bus_stops.collect {|p| [p.identifier, p.id ]}], { :selected => "" }, { :multiple => "true", :id => "lstBox2" } )%>
+          </div>
+          <div class="clearfix"></div>
+
+
+
+
+          <%= form.submit("Submit Trip", class: "waves-effect waves-light btn-large") %>
         <% end %>
-      </ul>
+      </div>
     </div>
-  <% end %>
- 
-  <p>
-    <%= form.label :identifier %><br>
-    <%= form.text_field :identifier, :value => @trip.identifier %>
-  </p>
-  <p>
-    <%= form.collection_select :bus_stops, @bus_stops || [], 
-        :id, :identifier, { include_blank: false },
-          { multiple: true } %>
-  </p>
- 
-  <p>
-    <%= form.submit %>
-  </p>
- 
-<% end %>
+  </body>
+</html>

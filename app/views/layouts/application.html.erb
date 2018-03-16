@@ -1,6 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title>AutocarroApp</title>
     <%= csrf_meta_tags %>
@@ -8,6 +15,49 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
   <body>
+    <!--Import jQuery before materialize.js-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('select').attr("class", "browser-default")
+      });
+    </script>
+    <nav>
+      <div class="nav-wrapper">
+        <div class="container">
+          <a href="#" class="brand-logo left">  Auto Carro App</a>
+        <div>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href=<%= gps_path %>>GPS</a></li>
+          <li><a href=<%= bus_stops_path %>>Bus Stop</a></li>
+          <li><a href=<%= trips_path %>>Trips</a></li>
+          <li><a href=<%= buses_path %>>Buses</a></li>
+          <% if user_signed_in? %>
+            <li><a href=<%= edit_user_registration_path %>>Edit Profile</a></li>
+            <li><a href=<%= destroy_user_session_path %>>Logout</a></li>
+          <% else %>
+            <li><a href=<%= new_user_registration_path %>>Sign Up</a></li>
+            <li><a href=<%= new_user_session_path %>>Log In</a></li>
+          <% end %>
+        </ul>
+      </div>
+    </nav>
     <%= yield %>
+    <footer class="page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Auto Carro App</h5>
+            <p class="grey-text text-lighten-4">Best app to know which bus to take to go wherever you want.</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          © 2018 Copyright Text
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
     resources :gps, only: [:index]
     
-    post '/gps/find_bus/', to: 'gps#find_bus', as: "find_bus"
+    post '/gps/find_bus', to: 'gps#find_bus', as: "find_bus"
+    get '/gps/find_bus', to: 'gps#index', as: "find_bus_index"
   end
 end

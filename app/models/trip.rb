@@ -8,7 +8,7 @@ class Trip < ApplicationRecord
   has_many :trip_bus_stop
   has_many :bus_stops, through: :trip_bus_stop
 
-  validates :identifier, presence: true, uniqueness: true
+  validates :identifier, presence: true, uniqueness: true, numericality: true
   validates :trip_bus_stop, length: { minimum: 2, maximum: 10 }
 
   def duration
@@ -50,6 +50,8 @@ class Trip < ApplicationRecord
   def duration_two_ways(start_stop, end_stop)
     connection_from_station = Connection.where(start_stop: start_stop, end_stop: end_stop).first
     connection_to_station = Connection.where(start_stop: end_stop, end_stop: start_stop).first
+    raise "no_connection_found" unless connection_from_station && connection_from_station
+    
     connection_from_station.trip_duration.minutes + connection_to_station.trip_duration.minutes
   end
 end

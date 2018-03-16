@@ -1,5 +1,6 @@
 class BusesController < ApplicationController
-  before_action :get_bus, only: [:show, :edit, :update, :destroy]
+  
+  before_action :set_bus, only: [:show, :edit, :update, :destroy]
 
   def index
     @buses = Bus.all
