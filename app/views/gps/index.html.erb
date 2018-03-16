@@ -1,32 +1,62 @@
-<!DOCTYPE html>
+
 <html lang="en">
+  <script>
+    function select_trip(selectElem) {
+      var trip_id = selectElem.options[selectElem.selectedIndex].value;
+      
+      var bus_stops_star = document.getElementsByClassName("bus_stops_start");
+      var bus_stops_end = document.getElementsByClassName("bus_stops_end");
+
+      for (var i = 0; i < bus_stops_star.length; i++) {
+        bus_stops_star[i].style.display = 'none';
+      }
+
+      for (var i = 0; i < bus_stops_end.length; i++) {
+        bus_stops_end[i].style.display = 'none';
+      }
+      
+      document.getElementById("start_"+trip_id).style.display = 'block';
+      document.getElementById("end_"+trip_id).style.display = 'block';
+    };
+  </script>
+  
   <body>
     <div class="container">
       <div class="row">
-        <h1>Where do you want to go?</h1>
+        <h2>Where do you want to go?</h2>
         <%= form_tag find_bus_path do %>
           <div class="row">
             <div class="col s4">
-              <h4>Where are you? </h4>
-                <%= collection_select :bus_stop_origin, 
-                  :id, @bus_stops || [], :id, :identifier,
-                    { multiple: false } %></br>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s4">
-              <h4>Where are you heading? </h4>
-                <%= collection_select :bus_stop_destiny, 
-                  :id, @bus_stops || [], :id, :identifier,
-                    { multiple: false } %></br>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s4">
               <h4>What line are you taking?</h4>
-                <%= collection_select :trip, 
-                  :id, @trips || [], :id,  :identifier,
+              <%= collection_select :trip, 
+                :id, @trips || [], :id,  :identifier,
+                { include_blank: '', multiple: false}, { onchange: "select_trip(this)" } %></br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s4">
+                <% @trips.each do |trip| %>
+                <div class="bus_stops_start" style="display:none" id=<%="start_#{trip.id}"%> >
+                  <h4>Where are you? </h4>
+                  <%= collection_select :bus_stop_origin, 
+                  :id, trip.bus_stops || [], :id, :identifier,
                     { multiple: false } %></br>
+                  <p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s4">
+              <% @trips.each do |trip| %>
+                <div class="bus_stops_end" style="display:none" id=<%="end_#{trip.id}"%> >
+                  <h4>Where are you heading? </h4>
+                  <%= collection_select :bus_stop_destiny, 
+                  :id, trip.bus_stops || [], :id, :identifier,
+                    { multiple: false } %></br>
+                  <p>
+                </div>
+              <% end %>
             </div>
           </div>
           <%= submit_tag("search", class: "waves-effect waves-light btn-large") %>

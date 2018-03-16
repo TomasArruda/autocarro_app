@@ -1,7 +1,7 @@
 <script>
     function select_trip(selectElem) {
       var trip_id = selectElem.options[selectElem.selectedIndex].value;
-      
+      console.log(trip_id)
       var previous_schedules = document.getElementsByClassName("schedules-dropdown");
 
       for (var i = 0; i < previous_schedules.length; i++) {
@@ -11,8 +11,11 @@
       document.getElementById("dropdown_schedules_"+trip_id).style.display = 'block';
     };
 
-    function load_dropdows(trip_id, schedule_id) {
-      if(trip_id !== null || schedule_id !== null){
+    $(document).ready(function(){
+      trip_id = <%= @trip_id || "null" %>
+      schedule_id = <%= @schedule_id || "null" %>
+
+      if(trip_id !== null && schedule_id !== null){
         document.getElementById("dropdown_trips").value = trip_id;
         document.getElementById("dropdown_schedules_"+trip_id).style.display = 'block';
 
@@ -23,10 +26,10 @@
           }
         }
       }
-    };
+    });
 </script>
 
-<body onload=<%="load_dropdows(#{@trip_id},#{@schedule_id});"%>>
+<body>
   <div class="container">
     <div class="row">
       <%= form_with model: @bus, local: true do |form| %> 
@@ -54,7 +57,7 @@
             <div class="trips-dropdown" >
               <%= form.collection_select :trip, @trips || [], 
                 :id, :identifier,
-                  { multiple: false }, { :id => "dropdown_trips",  :onchange => "select_trip(this)" } %>
+                  { include_blank: '', multiple: false }, { :id => "dropdown_trips",  :onchange => "select_trip(this)" } %>
             </div>
           </div>
         </div>

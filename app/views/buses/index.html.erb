@@ -9,13 +9,17 @@
       <% @buses.each do |bus| %>
       <li class="collection-item">
         <div>
-          <%= bus.registration_number %>
+          <strong>Registration number</strong><%= ": #{bus.registration_number}" %>
+          <strong>Trip</strong><%= ": #{bus.trip ? bus.trip.identifier : 'None'}" %>
+          <strong>Schedule</strong><%= ": #{bus.schedule ? bus.schedule.schedule_time_range : 'None'}"  %>
           <a href=<%= edit_bus_path(bus) %> class="secondary-content">
             <i class="material-icons">mode_edit</i>
           </a>
-          <a href=<%= bus_path(bus) %> class="secondary-content">
-            <i class="material-icons">delete</i>
-          </a>
+          <%= link_to 'delete', 
+             bus_path(bus), 
+                         method: :delete, 
+                         data: { confirm: 'Are you sure?' },
+                         class: "secondary-content material-icons" %>
         </div>
       </li>
       <% end %>

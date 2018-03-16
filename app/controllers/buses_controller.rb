@@ -1,6 +1,6 @@
 class BusesController < ApplicationController
-  
   before_action :set_bus, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_can_can
 
   def index
     @buses = Bus.all
@@ -14,6 +14,7 @@ class BusesController < ApplicationController
   end
 
   def create
+    new_setup
     @bus = Bus.new(registration_number: bus_params[:registration_number])
 
     @bus.trip = Trip.find(bus_params[:trip])
@@ -29,6 +30,7 @@ class BusesController < ApplicationController
   end
 
   def update
+    edit_setup
     @bus.registration_number = bus_params[:registration_number]
     @bus.trip = Trip.find(bus_params[:trip])
     @bus.schedule = Schedule.find(bus_params[:schedule])
@@ -40,16 +42,15 @@ class BusesController < ApplicationController
 
   def destroy
     @bus.destroy
-    respond_to do |format|
-      format.html { redirect_to buses_url, notice: 'Bus was successfully destroyed.' }
-    end
+    
+    redirect_to buses_path
   end
 
   private
 
   def save_bus(format, message)
     if @bus.save      
-      format.html { redirect_to @bus, notice: message }
+      format.html { redirect_to action: "index" }
       format.json { render json: Bus.all.order(:registration_number) }
     else
       format.html { render :edit }
@@ -85,11 +86,15 @@ class BusesController < ApplicationController
   def build_trips_schedules
     @trips_schedules = {}
     @trips.each do |trip|
-      @trips_schedules[:"#{trip.id}"] = trip.schedules.select { |schedule| schedule.bus == nil}
+      @trips_schedules[:"#{trip.id}"] = trip.schedules
     end
   end
 
   def bus_params
     params.require(:bus).permit(:registration_number, :trip, :schedule)
+  end
+
+  def authorize_can_can
+    authorize! :mana, :all
   end
 end

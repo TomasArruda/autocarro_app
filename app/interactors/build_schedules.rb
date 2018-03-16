@@ -17,7 +17,6 @@ class BuildSchedules
     finishes = finish_schedules
 
     destroy_old_schedules
-    
     (0..(number_of_buses - 1)).each do |index|
       Schedule.new(
         trip: trip, 
@@ -90,7 +89,7 @@ class BuildSchedules
     bus_stop_departs = [first_depart]
     step = indexes[1]-indexes[0]
 
-    indexes.to_a.reverse.to_a.each do |index|
+    indexes.each do |index|
       start_stop = bus_stops[index]
       next_stop = bus_stops[index+step]
       duration = connection_duration(start_stop, next_stop)

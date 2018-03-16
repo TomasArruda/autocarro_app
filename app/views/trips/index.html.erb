@@ -13,9 +13,11 @@
           <a href=<%= edit_trip_path(trip) %> class="secondary-content">
             <i class="material-icons">mode_edit</i>
           </a>
-          <a href=<%= trip_path(trip) %> class="secondary-content">
-            <i class="material-icons">delete</i>
-          </a>
+          <%= link_to 'delete', 
+             trip_path(trip), 
+                         method: :delete, 
+                         data: { confirm: 'Are you sure?' },
+                         class: "secondary-content material-icons" %>
         </div>
       </li>
       <% end %>

@@ -3,6 +3,6 @@ class Bus < ApplicationRecord
   has_one :schedule, :class_name => "Schedule" 
   belongs_to :trip, :class_name => "Trip", :foreign_key => 'trip_id'
 
-  validates :registration_number, presence: true, uniqueness: true, numericality: true
+  validates :registration_number, presence: true, uniqueness: true
   validates_format_of :registration_number, :with => REGISTRATION_NUMBER_REGEX, :on => :create
 end

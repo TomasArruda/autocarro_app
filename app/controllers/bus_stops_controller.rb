@@ -1,5 +1,6 @@
 class BusStopsController < ApplicationController
   before_action :set_bus_stop, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_can_can
 
   def index
     @bus_stops = BusStop.all
@@ -30,17 +31,17 @@ class BusStopsController < ApplicationController
   end
 
   def destroy
+    @bus_stop.trip_bus_stop.destroy_all
     @bus_stop.destroy
-    respond_to do |format|
-      format.html { redirect_to buses_url, notice: 'Bus stop was successfully destroyed.' }
-    end
+    
+    redirect_to bus_stops_path
   end
 
   private
 
   def save_bus_stop(format, message)
     if @bus_stop.save      
-      format.html { redirect_to @bus_stop, notice: message }
+      format.html { redirect_to action: "index" }
       format.json { render json: BusStop.all.order(:identifier) }
     else
       format.html { render :edit }
@@ -54,5 +55,9 @@ class BusStopsController < ApplicationController
 
   def bus_stop_params
     params.require(:bus_stop).permit(:identifier)
+  end
+
+  def authorize_can_can
+    authorize! :mana, :all
   end
 end

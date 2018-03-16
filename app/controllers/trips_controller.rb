@@ -1,5 +1,6 @@
 class TripsController < ApplicationController
   before_action :set_trip, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_can_can
 
   def index
     @trips = Trip.all
@@ -15,7 +16,6 @@ class TripsController < ApplicationController
   end
 
   def create
-    byebug
     @selected_bus_stops = []
     @trip = BuildTrip.call(params: trip_params).trip
     
@@ -25,17 +25,11 @@ class TripsController < ApplicationController
   end
 
   def edit
-    get_bus_stops
-    @selected_bus_stops = @trip.bus_stops
-    selected_bus_stops_ids = @selected_bus_stops.map(&:id)
-    @bus_stops = @bus_stops.select { |bs| !selected_bus_stops_ids.include?(bs.id) }
+    edit_and_update_setup
   end
 
   def update
-    get_bus_stops
-    @selected_bus_stops = @trip.bus_stops
-    selected_bus_stops_ids = @selected_bus_stops.map(&:id)
-    @bus_stops = @bus_stops.select { |bs| !selected_bus_stops_ids.include?(bs.id) }
+    edit_and_update_setup
     
     UpdateTrip.call(trip: @trip, params: trip_params)
 
@@ -45,10 +39,11 @@ class TripsController < ApplicationController
   end
 
   def destroy
-    @bus.destroy
-    respond_to do |format|
-      format.html { redirect_to buses_url, notice: 'Trip was successfully destroyed.' }
-    end
+    @trip.trip_bus_stop.destroy_all
+    @trip.schedules.destroy_all
+    @trip.destroy
+    
+    redirect_to trips_path
   end
 
   private
@@ -58,12 +53,19 @@ class TripsController < ApplicationController
       BuildConnections.call(bus_stops: @trip.bus_stops)
       BuildSchedules.call(trip: @trip)
       
-      format.html { redirect_to @trip, notice: message }
+      format.html { redirect_to action: "index" }
       format.json { render json: Trip.all.order(:identifier) }
     else
       format.html { render :edit }
       format.json { render json: @trip.errors, status: :unprocessable_entity }
     end
+  end
+
+  def edit_and_update_setup
+    get_bus_stops
+    @selected_bus_stops = @trip.bus_stops
+    selected_bus_stops_ids = @selected_bus_stops.map(&:id)
+    @bus_stops = @bus_stops.select { |bs| !selected_bus_stops_ids.include?(bs.id) }
   end
 
   def set_trip
@@ -77,5 +79,9 @@ class TripsController < ApplicationController
 
   def trip_params
     params.require(:trip).permit(:identifier, :bus_stops => [])
+  end
+
+  def authorize_can_can
+    authorize! :mana, :all
   end
 end

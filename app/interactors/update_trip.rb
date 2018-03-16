@@ -16,6 +16,7 @@ class UpdateTrip
     bus_stops = params[:bus_stops].reject { |c| c.empty? }
 
     trip.trip_bus_stop.clear if bus_stops.any?
+    trip.buses = [] if trip.buses.any?
 
     bus_stops.each do |bus_stop_id|
       trip.trip_bus_stop.build(bus_stop_id: bus_stop_id)

@@ -39,28 +39,8 @@
         $(selectedOpts).remove();
       };
 
-      function btnAllRightClick(e) {
-        var selectedOpts = $('#lstBox1 option');
-        if (selectedOpts.length == 0) {
-            alert("Nothing to move.");
-            e.preventDefault();
-        }
-        $('#lstBox2').append($(selectedOpts).clone());
-        $(selectedOpts).remove();
-      };
-
       function btnLeftClick(e) {
         var selectedOpts = $('#lstBox2 option:selected');
-        if (selectedOpts.length == 0) {
-            alert("Nothing to move.");
-            e.preventDefault();
-        }
-        $('#lstBox1').append($(selectedOpts).clone());
-        $(selectedOpts).remove();
-      };
-
-      function btnAllLeftClick(e) {
-        var selectedOpts = $('#lstBox2 option');
         if (selectedOpts.length == 0) {
             alert("Nothing to move.");
             e.preventDefault();
@@ -92,35 +72,18 @@
                 <%= form.number_field :identifier, :value => @trip.identifier %>
             </div>
           </div>
-          <div class="row">
-            <div class="col s4">
-              <%= form.collection_select :bus_stops, @bus_stops || [], 
-                :id, :identifier, { include_blank: false },
-                  { multiple: true } %>
-            </div>
-          </div>
-
-
-
-
+          <h4>Choose the bus station </h4>
           <div class="subject-info-box-1">
             <%= form.select( :bus_stops_to_choose, @bus_stops.collect {|p| [p.identifier, p.id ]}, { :selected => "" }, { :multiple => "true", :id => "lstBox1" } )%>
           </div>
           <div class="subject-info-arrows text-center">
-            <input type="button" id="btnAllRight" value=">>" class="btn btn-default" onclick="btnAllRightClick(this)" /><br />
             <input type="button" id="btnRight" value=">" class="btn btn-default" onclick="btnRightClick(this)" /><br />
             <input type="button" id="btnLeft" value="<" class="btn btn-default" onclick="btnLeftClick(this)" /><br />
-            <input type="button" id="btnAllLeft" value="<<" class="btn btn-default" onclick="btnAllLeftClick(this)" />
           </div>
           <div class="subject-info-box-2">
-            <% byebug %>
-            <%= form.select( :bus_stops, [@selected_bus_stops.collect {|p| [p.identifier, p.id ]}], { :selected => "" }, { :multiple => "true", :id => "lstBox2" } )%>
+            <%= form.select( :bus_stops, @selected_bus_stops.collect {|p| [p.identifier, p.id ]}, { :selected => "" }, { :multiple => "true", :id => "lstBox2" } )%>
           </div>
           <div class="clearfix"></div>
-
-
-
-
           <%= form.submit("Submit Trip", class: "waves-effect waves-light btn-large") %>
         <% end %>
       </div>

@@ -16,7 +16,7 @@
 				position: absolute;
 				left: 0;
 				top: 0;
-				z-index: 999;
+				z-index: auto;
 			}
 
 			.cxtmenu-disabled {
@@ -177,7 +177,7 @@
   <body>
     <h1>Bus Map</h1>
     <div id="bus_map", style="display: none;" value=<%= @bus_map.to_json %>></div>
-    <div id="cyWrapper" style="position: relative; solid #212523">
+    <div id="cyWrapper" style="height:500px; width:100%; position: relative; solid #212523">
       <div id='cy'></div>
     </div>
   </body>

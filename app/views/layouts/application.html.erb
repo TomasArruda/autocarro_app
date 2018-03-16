@@ -30,9 +30,11 @@
         <div>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><a href=<%= gps_path %>>GPS</a></li>
-          <li><a href=<%= bus_stops_path %>>Bus Stop</a></li>
-          <li><a href=<%= trips_path %>>Trips</a></li>
-          <li><a href=<%= buses_path %>>Buses</a></li>
+          <% if can? :manage, :all %>
+            <li><a href=<%= bus_stops_path %>>Bus Stop</a></li>
+            <li><a href=<%= trips_path %>>Trips</a></li>
+            <li><a href=<%= buses_path %>>Buses</a></li>
+          <% end %>
           <% if user_signed_in? %>
             <li><a href=<%= edit_user_registration_path %>>Edit Profile</a></li>
             <li><a href=<%= destroy_user_session_path %>>Logout</a></li>
